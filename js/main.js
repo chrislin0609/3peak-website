@@ -65,8 +65,8 @@ function initHeaderScroll() {
 
   const onScroll = () => {
     header.style.background = window.scrollY > 20
-      ? 'rgba(10, 10, 10, 0.92)'
-      : 'rgba(10, 10, 10, 0.75)';
+      ? 'rgba(255, 255, 255, 0.92)'
+      : 'rgba(255, 255, 255, 0.75)';
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
