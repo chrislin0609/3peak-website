@@ -4,9 +4,9 @@
 
 :root {
   --black: #ffffff;
-  --black-soft: #f6f6f4;
-  --charcoal: #eeeeeb;
-  --charcoal-light: #e6e6e2;
+  --black-soft: #eef6f5;
+  --charcoal: #e3f1ee;
+  --charcoal-light: #d7ebe7;
   --white: #16161c;
   --off-white: #45453f;
   --gray: #6b6b66;
@@ -370,8 +370,8 @@ p {
   position: relative;
   padding-top: 78px;
   background:
-    radial-gradient(ellipse at 15% 20%, rgba(13, 148, 136, 0.16), transparent 55%),
-    radial-gradient(ellipse at 85% 80%, rgba(13, 148, 136, 0.1), transparent 50%),
+    radial-gradient(ellipse at 15% 20%, rgba(13, 148, 136, 0.28), transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(242, 185, 12, 0.14), transparent 50%),
     var(--black);
   overflow: hidden;
 }
@@ -493,7 +493,13 @@ p {
 }
 
 .pillar-card .peak-icon {
-  color: var(--red);
+  color: #ffffff;
+  background: var(--red);
+  border-radius: 50%;
+  padding: 14px;
+  box-sizing: border-box;
+  width: 60px;
+  height: 60px;
   margin-bottom: 22px;
 }
 
@@ -524,7 +530,7 @@ p {
   aspect-ratio: 4/5;
   border-radius: 24px;
   background:
-    radial-gradient(circle at 30% 20%, rgba(13,148,136,0.35), transparent 55%),
+    radial-gradient(circle at 30% 20%, rgba(13,148,136,0.55), transparent 55%),
     linear-gradient(160deg, var(--charcoal), var(--black-soft));
   display: flex;
   align-items: center;
@@ -727,7 +733,7 @@ p {
   padding: 168px 0 80px;
   position: relative;
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.16), transparent 55%),
+    radial-gradient(ellipse at 20% 0%, rgba(13,148,136,0.28), transparent 55%),
     var(--black);
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
@@ -809,9 +815,13 @@ p {
 }
 
 .value-card .peak-icon {
-  width: 34px;
-  height: 34px;
-  color: var(--red);
+  width: 48px;
+  height: 48px;
+  padding: 11px;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: var(--red);
+  border-radius: 50%;
   margin-bottom: 18px;
 }
 
@@ -951,9 +961,13 @@ p {
 }
 
 .benefit-map-card .peak-icon {
-  width: 30px;
-  height: 30px;
-  color: var(--red);
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  box-sizing: border-box;
+  color: #ffffff;
+  background: var(--red);
+  border-radius: 50%;
 }
 
 .benefit-map-card .body {
@@ -1114,7 +1128,7 @@ p {
 .testimonial-card .stars {
   display: flex;
   gap: 3px;
-  color: var(--red);
+  color: #f2b90c;
 }
 
 .testimonial-card .stars svg { width: 15px; height: 15px; }
@@ -1332,7 +1346,7 @@ p {
   text-align: center;
   padding: 100px 0;
   background:
-    radial-gradient(ellipse at 50% 100%, rgba(13,148,136,0.25), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(13,148,136,0.4), transparent 60%),
     var(--black);
   border-top: 1px solid rgba(0,0,0,0.06);
 }
