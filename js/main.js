@@ -138,7 +138,7 @@ function initNewsletterForm() {
   });
 }
 
-/* Shop page — flavor/pack selection, total price, mock add-to-cart */
+/* Shop page — flavor/pack selection, total price, mock add-to-cart + cart preview */
 function initShopPage() {
   const addButton = document.getElementById('add-to-cart');
   if (!addButton) return;
@@ -151,13 +151,25 @@ function initShopPage() {
   const cartSuccess = document.getElementById('cart-success');
   const cartSuccessText = document.getElementById('cart-success-text');
 
+  const cartToggle = document.getElementById('cart-toggle');
+  const cartWrap = document.querySelector('.cart-wrap');
+  const cartDropdown = document.getElementById('cart-dropdown');
+  const cartBadge = document.getElementById('cart-badge');
+  const cartEmpty = document.getElementById('cart-empty');
+  const cartItemsEl = document.getElementById('cart-items');
+  const cartSubtotalRow = document.getElementById('cart-subtotal-row');
+  const cartSubtotal = document.getElementById('cart-subtotal');
+
   let selectedFlavor = document.querySelector('.flavor-chip.active')?.dataset.flavor || 'Yuzu';
+  let selectedColor = document.querySelector('.flavor-chip.active')?.dataset.color || '#c7d92e';
+  const cart = [];
 
   flavorChips.forEach((chip) => {
     chip.addEventListener('click', () => {
       flavorChips.forEach((c) => c.classList.remove('active'));
       chip.classList.add('active');
       selectedFlavor = chip.dataset.flavor;
+      selectedColor = chip.dataset.color;
       if (pouchAccent) pouchAccent.setAttribute('fill', chip.dataset.color);
       if (pouchLabel) pouchLabel.textContent = selectedFlavor.toUpperCase();
       if (cartSuccess) cartSuccess.classList.remove('show');
@@ -184,9 +196,82 @@ function initShopPage() {
 
   updateTotal();
 
+  const renderCart = () => {
+    if (!cartItemsEl) return;
+
+    cartItemsEl.innerHTML = '';
+    const isEmpty = cart.length === 0;
+    if (cartEmpty) cartEmpty.style.display = isEmpty ? 'block' : 'none';
+    if (cartSubtotalRow) cartSubtotalRow.style.display = isEmpty ? 'none' : 'flex';
+
+    let subtotal = 0;
+    cart.forEach((item, index) => {
+      subtotal += item.price;
+      const row = document.createElement('div');
+      row.className = 'cart-item';
+      row.innerHTML = `
+        <span class="cart-item-swatch" style="background:${item.color};"></span>
+        <div class="cart-item-info">
+          <strong>${item.flavor} - ${item.packLabel}</strong>
+          <span>${item.sachets} sachets</span>
+        </div>
+        <span class="cart-item-price">${formatPrice(item.price)}</span>
+        <button type="button" class="cart-item-remove" aria-label="Remove item" data-index="${index}">×</button>
+      `;
+      cartItemsEl.appendChild(row);
+    });
+
+    if (cartSubtotal) cartSubtotal.textContent = formatPrice(subtotal);
+    if (cartBadge) {
+      cartBadge.textContent = cart.length;
+      cartBadge.classList.toggle('hide', cart.length === 0);
+    }
+
+    cartItemsEl.querySelectorAll('.cart-item-remove').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        cart.splice(Number(btn.dataset.index), 1);
+        renderCart();
+      });
+    });
+  };
+
+  const openCart = () => {
+    if (!cartDropdown) return;
+    cartDropdown.classList.add('is-open');
+    if (cartToggle) cartToggle.setAttribute('aria-expanded', 'true');
+  };
+
+  const closeCart = () => {
+    if (!cartDropdown) return;
+    cartDropdown.classList.remove('is-open');
+    if (cartToggle) cartToggle.setAttribute('aria-expanded', 'false');
+  };
+
+  if (cartToggle) {
+    cartToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      cartDropdown.classList.contains('is-open') ? closeCart() : openCart();
+    });
+  }
+
+  document.addEventListener('click', (e) => {
+    if (cartWrap && !cartWrap.contains(e.target)) closeCart();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeCart();
+  });
+
   addButton.addEventListener('click', () => {
     const checked = document.querySelector('input[name="pack"]:checked');
     const sachets = checked ? checked.dataset.sachets : '30';
+    const price = checked ? Number(checked.dataset.price) : 1888;
+    const packLabel = checked && checked.value === '2' ? '2 Boxes' : '1 Box';
+
+    cart.push({ flavor: selectedFlavor, color: selectedColor, packLabel, sachets, price });
+    renderCart();
+    openCart();
+
     if (cartSuccessText) {
       cartSuccessText.textContent = `Added ${selectedFlavor} (${sachets} sachets) to cart.`;
     }
