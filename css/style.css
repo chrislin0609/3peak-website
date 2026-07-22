@@ -1182,6 +1182,22 @@ p {
   text-transform: none;
 }
 
+.cart-checkout {
+  margin-top: 16px;
+  font-size: 0.85rem;
+  padding: 12px;
+}
+
+.cart-checkout-note {
+  display: none;
+  font-size: 0.76rem;
+  color: var(--gray);
+  margin-top: 10px;
+  text-align: center;
+}
+
+.cart-checkout-note.show { display: block; }
+
 .ingredient-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

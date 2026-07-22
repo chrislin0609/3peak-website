@@ -159,6 +159,8 @@ function initShopPage() {
   const cartItemsEl = document.getElementById('cart-items');
   const cartSubtotalRow = document.getElementById('cart-subtotal-row');
   const cartSubtotal = document.getElementById('cart-subtotal');
+  const checkoutButton = document.getElementById('checkout-button');
+  const checkoutNote = document.getElementById('checkout-note');
 
   let selectedFlavor = document.querySelector('.flavor-chip.active')?.dataset.flavor || 'Yuzu';
   let selectedColor = document.querySelector('.flavor-chip.active')?.dataset.color || '#c7d92e';
@@ -203,6 +205,8 @@ function initShopPage() {
     const isEmpty = cart.length === 0;
     if (cartEmpty) cartEmpty.style.display = isEmpty ? 'block' : 'none';
     if (cartSubtotalRow) cartSubtotalRow.style.display = isEmpty ? 'none' : 'flex';
+    if (checkoutButton) checkoutButton.style.display = isEmpty ? 'none' : 'block';
+    if (checkoutNote) checkoutNote.classList.remove('show');
 
     let subtotal = 0;
     cart.forEach((item, index) => {
@@ -251,6 +255,12 @@ function initShopPage() {
     cartToggle.addEventListener('click', (e) => {
       e.stopPropagation();
       cartDropdown.classList.contains('is-open') ? closeCart() : openCart();
+    });
+  }
+
+  if (checkoutButton) {
+    checkoutButton.addEventListener('click', () => {
+      if (checkoutNote) checkoutNote.classList.add('show');
     });
   }
 
