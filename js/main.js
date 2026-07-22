@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFaqAccordion();
   initCommunityForm();
   initNewsletterForm();
+  initShopPage();
   markActiveNavLink();
 });
 
@@ -134,6 +135,65 @@ function initNewsletterForm() {
     button.innerHTML = '✓';
     input.value = '';
     setTimeout(() => { button.innerHTML = original; }, 2000);
+  });
+}
+
+/* Shop page — flavor/pack selection, total price, mock add-to-cart */
+function initShopPage() {
+  const addButton = document.getElementById('add-to-cart');
+  if (!addButton) return;
+
+  const flavorChips = document.querySelectorAll('.flavor-chip');
+  const packCards = document.querySelectorAll('.pack-card');
+  const totalPrice = document.getElementById('shop-total-price');
+  const pouchAccent = document.getElementById('pouch-accent');
+  const pouchLabel = document.getElementById('pouch-flavor-label');
+  const cartSuccess = document.getElementById('cart-success');
+  const cartSuccessText = document.getElementById('cart-success-text');
+
+  let selectedFlavor = document.querySelector('.flavor-chip.active')?.dataset.flavor || 'Yuzu';
+
+  flavorChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      flavorChips.forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      selectedFlavor = chip.dataset.flavor;
+      if (pouchAccent) pouchAccent.setAttribute('fill', chip.dataset.color);
+      if (pouchLabel) pouchLabel.textContent = selectedFlavor.toUpperCase();
+      if (cartSuccess) cartSuccess.classList.remove('show');
+    });
+  });
+
+  const formatPrice = (value) => 'NT$' + Number(value).toLocaleString('en-US');
+
+  const updateTotal = () => {
+    const checked = document.querySelector('input[name="pack"]:checked');
+    if (checked && totalPrice) totalPrice.textContent = formatPrice(checked.dataset.price);
+  };
+
+  packCards.forEach((card) => {
+    const input = card.querySelector('input[type="radio"]');
+    card.addEventListener('click', () => {
+      packCards.forEach((c) => c.classList.remove('selected'));
+      card.classList.add('selected');
+      if (input) input.checked = true;
+      updateTotal();
+      if (cartSuccess) cartSuccess.classList.remove('show');
+    });
+  });
+
+  updateTotal();
+
+  addButton.addEventListener('click', () => {
+    const checked = document.querySelector('input[name="pack"]:checked');
+    const sachets = checked ? checked.dataset.sachets : '30';
+    if (cartSuccessText) {
+      cartSuccessText.textContent = `Added ${selectedFlavor} (${sachets} sachets) to cart.`;
+    }
+    if (cartSuccess) {
+      cartSuccess.classList.add('show');
+      cartSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   });
 }
 
