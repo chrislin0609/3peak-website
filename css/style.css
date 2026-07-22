@@ -793,6 +793,12 @@ p {
   opacity: 0.9;
 }
 
+.split-visual .scene {
+  width: 86%;
+  height: 86%;
+  color: var(--red);
+}
+
 .split-copy .eyebrow { margin-bottom: 14px; }
 
 .split-copy h2 { margin-bottom: 20px; }
